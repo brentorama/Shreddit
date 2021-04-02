@@ -67,7 +67,7 @@ class Shredder(object):
     def shred(self):
         deleted = self._remove_things(self._build_iterator())
         self._logger.info("Finished deleting {} items. ".format(deleted))
-        if deleted >= 1000:
+        if deleted >= 20:
             # This user has more than 1000 items to handle, which angers the gods of the Reddit API. So chill for a
             # while and do it again.
             self._logger.info("Waiting {} seconds and continuing...".format(self._batch_cooldown))
@@ -125,6 +125,7 @@ class Shredder(object):
 
         self._logger.debug("Editing and deleting {msg}".format(msg=msg))
         if not self._trial_run:
+            time.sleep(15)
             comment.edit(replacement_text)
 
     def _remove(self, item):
@@ -155,10 +156,12 @@ class Shredder(object):
             if str(item.subreddit).lower() in self._blacklist:
                 self._logger.debug("Deleting due to blacklist")
                 count_removed += 1
+                time.sleep(15)
                 self._remove(item)
             elif created <= self._nuke_cutoff:
                 self._logger.debug("Item occurs prior to nuke cutoff")
                 count_removed += 1
+                time.sleep(15)
                 self._remove(item)
             elif self._check_whitelist(item):
                 self._logger.debug("Skipping due to: whitelisted")
@@ -168,6 +171,7 @@ class Shredder(object):
                 continue
             else:
                 count_removed += 1
+                time.sleep(15)
                 self._remove(item)
         return count_removed
 

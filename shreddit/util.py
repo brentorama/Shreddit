@@ -3,10 +3,7 @@
 import random
 
 
-LOREM = """Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sit amet nulla id mi imperdiet condimentum. \
-           Vestibulum ac consequat lorem, eu tempus felis. Maecenas eget purus in nisi blandit volutpat. Aenean \
-           bibendum eros sit amet ex rhoncus, eu porta magna sodales. Sed venenatis sapien sit amet tempor euismod. \
-           Ut a neque purus. Vestibulum quis tortor non leo eleifend interdum."""
+LOREM = """I don't like reddit because I cant mass delete comments."""
 
 
 try:
