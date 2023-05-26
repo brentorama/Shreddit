@@ -7,20 +7,36 @@ import praw
 import sys
 import time
 import yaml
+import random
 from datetime import datetime, timedelta
 from praw.models import Comment, Submission
 from prawcore.exceptions import ResponseException, OAuthException, BadRequest
 from re import sub
-from shreddit.util import get_sentence, ShredditError
 
+try:
+    from loremipsum import get_sentence
 
-class Shredder(object):
-    """This class stores state for configuration, API objects, logging, etc. It exposes a shred() method that
+except ImportError:
+    def get_sentence():
+        LOREM = """Abc"""
+        words = LOREM.split()
+        random.shuffle(words)
+        return " ".join(words)
+
+class LowScoreError(Exception):
+    def __init__(self, value=None):
+        self.value = value if value else "No information provided"
+
+    def __str__(self):
+        return repr(self.value)
+
+class LowScore(object):
+    """This class stores state for configuration, API objects, logging, etc. It exposes a run() method that
     application code can call to start it.
     """
     def __init__(self, config, user):
         logging.basicConfig()
-        self._logger = logging.getLogger("shreddit")
+        self._logger = logging.getLogger("lowScore")
         self._logger.setLevel(level=logging.DEBUG if config.get("verbose", True) else logging.INFO)
         self.__dict__.update({"_{}".format(k): config[k] for k in config})
 
@@ -64,7 +80,7 @@ class Shredder(object):
         if self._trial_run:
             self._logger.info("Trial run - no deletion will be performed")
 
-    def shred(self):
+    def run(self):
         deleted = self._remove_things(self._build_iterator())
         self._logger.info("Finished deleting {} items. ".format(deleted))
         if deleted >= 20:
@@ -73,16 +89,16 @@ class Shredder(object):
             self._logger.info("Waiting {} seconds and continuing...".format(self._batch_cooldown))
             time.sleep(self._batch_cooldown)
             self._connect()
-            self.shred()
+            self.run()
 
     def _connect(self):
         try:
-            self._r = praw.Reddit(self._user, check_for_updates=False, user_agent="python:shreddit:v6.0.4")
+            self._r = praw.Reddit(self._user, check_for_updates=False, user_agent="python:lowScore:v6.0.4")
             self._logger.info("Logged in as {user}.".format(user=self._r.user.me()))
         except ResponseException:
-            raise ShredditError("Bad OAuth credentials")
+            raise LowScoreError("Bad OAuth credentials")
         except OAuthException:
-            raise ShredditError("Bad username or password")
+            raise LowScoreError("Bad username or password")
 
     def _check_whitelist(self, item):
         """Returns True if the item is whitelisted, False otherwise.
@@ -191,4 +207,4 @@ class Shredder(object):
         elif self._sort == "controversial":
             return item.controversial(limit=None)
         else:
-            raise ShredditError("Sorting \"{}\" not recognized.".format(self._sort))
+            raise LowScoreError("Sorting \"{}\" not recognized.".format(self._sort))

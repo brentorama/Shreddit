@@ -1,46 +1,46 @@
-# Shreddit
+# LowScore
 
-Shreddit is a Python command line program which will take a user's post history on the website
+LowScore is a Python command line program which will take a user's post history on the website
 [Reddit](http://reddit.com), and will systematically go through the user's history deleting one post/submission at a
 time until only those whitelisted remain. It allows you to maintain your normal reddit account while having your history
 scrubbed after a certain amount of time.
 
 When it became known that post edits were *not* saved but post deletions *were* saved, code was added to edit your post
 prior to deletion. In fact you can actually turn off deletion all together and just have lorem ipsum (or a message
-about Shreddit) but this will increase how long it takes the script to run as it will be going over all of your messages
+about LowScore) but this will increase how long it takes the script to run as it will be going over all of your messages
 every run.
 
 ## Important New Changes (as of Dec 2016)
 
-Due to deprecation of the PRAW 3.x library, Shreddit is using PRAW 4. This requires that OAuth be used to authenticate.
+Due to deprecation of the PRAW 3.x library, LowScore is using PRAW 4. This requires that OAuth be used to authenticate.
 Thankfully, however, it is much easier than in previous versions. If you are upgrading, [please review the usage section
 to ensure that you have set up credentials correctly.](#configuring-credentials)
 
 ## Pip Installation
 
-`pip install -U shreddit` will install the package and its dependencies, and it will add a `shreddit` command line
+`pip install -U lowScore` will install the package and its dependencies, and it will add a `lowScore` command line
 utility to your PATH. This is typically either run in a virtualenv or using administrative privileges for global
 installation.
 
 ## Manual Installation
 
-1. Clone the `shreddit` repository to a directory.
+1. Clone the `lowScore` repository to a directory.
 2. From the directory, run `pip install -r requirements.txt`
-3. Run `python setup.py install` to install the package and the `shreddit` command line utility.  This is typically
+3. Run `python setup.py install` to install the package and the `lowScore` command line utility.  This is typically
    either run in a virtualenv or using administrative privileges for global installation.
 
 ## Usage
 
-After installing the `shreddit` command line utility, the first step is setting up the tool's configuration files.
-Simply typing `shreddit -g` will generate configs. After configuring credentials, running the tool with the `shreddit`
+After installing the `lowScore` command line utility, the first step is setting up the tool's configuration files.
+Simply typing `lowScore -g` will generate configs. After configuring credentials, running the tool with the `lowScore`
 command will begin the tool's operation.
 
 ### Configuring Credentials
 
-Running `shreddit -g` will generate a blank praw.ini file that looks like this:
+Running `lowScore -g` will generate a blank praw.ini file that looks like this:
 
 ```
-# Credentials go here. Fill out default, or provide one or more names and call shreddit with the -u option to specify
+# Credentials go here. Fill out default, or provide one or more names and call lowScore with the -u option to specify
 # which set to use.
 [default]
 client_id=
@@ -57,7 +57,7 @@ client ID and secret, follow these steps (taken from
 [PRAW documentation](http://praw.readthedocs.io/en/latest/getting_started/authentication.html#script-application)):
 
 1. Open your Reddit application preferences by clicking [here](https://www.reddit.com/prefs/apps/).
-2. Add a new application. It doesn't matter what it's named, but calling it "shreddit" makes it easier to remember.
+2. Add a new application. It doesn't matter what it's named, but calling it "lowScore" makes it easier to remember.
 3. Select "script".
 4. Redirect URL does not matter for script applications, so enter something like http://127.0.0.1:8080
 5. Once created, you should see the name of your application followed by 14 character string. Enter this 14 character
@@ -74,12 +74,12 @@ username=testuser
 password=123passwordgoeshere123
 ```
 
-Keep your praw.ini either in the current directory when running `shreddit`, or in one of the config folders
+Keep your praw.ini either in the current directory when running `lowScore`, or in one of the config folders
 [described here](http://praw.readthedocs.io/en/latest/getting_started/configuration/prawini.html) such as
 `~/.config` in Linux or `%APPDATA%` in Windows.
 
 To use more than one account, you can add multiple profiles instead of just `[default]` and use the `-u` option to 
-`shreddit` to choose which one each time.
+`lowScore` to choose which one each time.
 
 ### Automating
 
@@ -92,32 +92,32 @@ The following examples require that the PRAW configuration file is located in th
 documentation](http://praw.readthedocs.io/en/latest/getting_started/configuration/prawini.html) for more information.
 
 - Run every hour on the hour
-        `0 * * * * shreddit -c <full path to shreddit.yml>`
+        `0 * * * * lowScore -c <full path to lowScore.yml>`
 
 - Run at 3am every morning
-        `0 3 * * * shreddit -c <full path to shreddit.yml>`
+        `0 3 * * * lowScore -c <full path to lowScore.yml>`
 
 - Run once a month on the 1st of the month
-        `0 0 1 * * shreddit -c <full path to shreddit.yml>`
+        `0 0 1 * * lowScore -c <full path to lowScore.yml>`
 
 If virtualenv was used, be sure to add `source /full/path/to/venv/bin/activate &&` before the command. For example:
 
-`0 * * * * source /full/path/to/venv/bin/activate && shreddit -c <full path to shreddit.yml>`
+`0 * * * * source /full/path/to/venv/bin/activate && lowScore -c <full path to lowScore.yml>`
 
 ### Command Line Options
 
 ```
-$ shreddit --help
+$ lowScore --help
 usage: app.py [-h] [-c CONFIG] [-g] [-u USER]
 
-Command-line frontend to the shreddit library.
+Command-line frontend to the lowScore library.
 
 optional arguments:
   -h, --help            show this help message and exit
   -c CONFIG, --config CONFIG
-                        Config file to use instead of the default shreddit.yml
+                        Config file to use instead of the default lowScore.yml
   -g, --generate-configs
-                        Write shreddit and praw config files to current
+                        Write lowScore and praw config files to current
                         directory.
   -u USER, --user USER  User section from praw.ini if not default
 ```
@@ -128,7 +128,7 @@ optional arguments:
    [Click here for the Python download page](https://www.python.org/downloads/).
         - **Note:** Install either `python 2.x` or `python 3.x`, not both.
 2. Follow the [pip installation](#pip-installation) instructions.
-3. Open a new command prompt and verify that the `shreddit` command works before moving on to the [usage](#usage)
+3. Open a new command prompt and verify that the `lowScore` command works before moving on to the [usage](#usage)
    section.
 
 ## Caveats

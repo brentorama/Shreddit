@@ -1,4 +1,4 @@
-"""Setup script for shreddit.
+"""Setup script for lowScore.
 """
 from setuptools import setup
 from codecs import open
@@ -13,11 +13,11 @@ with open(path.join(here, "README.md"), encoding='utf-8') as filein:
     long_description = filein.read()
 
 setup(
-    name="shreddit",
+    name="lowScore",
     version=VERSION,
     description=DESCRIPTION,
     long_description=long_description,
-    url="https://github.com/x89/Shreddit",
+    url="https://github.com/x89/LowScore",
     author="David John",
     author_email="david@vaunt.eu",
     classifiers=["Development Status :: 4 - Beta",
@@ -25,12 +25,12 @@ setup(
                  "License :: OSI Approved :: BSD License",
                  "Programming Language :: Python"],
     license="FreeBSD License",
-    packages=["shreddit"],
+    packages=["lowScore"],
     install_requires=["arrow", "backports-abc", "praw>=4", "PyYAML", "requests", "six", "tornado"],
-    package_data={"shreddit": ["*.example"]},
+    package_data={"lowScore": ["*.example"]},
     entry_points={
         "console_scripts": [
-            "shreddit=shreddit.app:main"
+            "lowScore=lowScore.app:main"
         ]
     }
 )
